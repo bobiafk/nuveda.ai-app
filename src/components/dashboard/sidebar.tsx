@@ -153,7 +153,7 @@ function SidebarToolItem({
 function DesktopSidebar() {
   const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
-  const [pinned, setPinned] = useState(false);
+  const [pinned, setPinned] = useState(true);
   const [hovered, setHovered] = useState(false);
   const [mounted, setMounted] = useState(false);
   const leaveTimer = useRef<ReturnType<typeof setTimeout>>(null);
