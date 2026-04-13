@@ -62,7 +62,7 @@ export default function MusicGenerationPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Genre</Label>
             <Select value={genre} onValueChange={setGenre}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -78,7 +78,7 @@ export default function MusicGenerationPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Mood</Label>
             <Select value={mood} onValueChange={setMood}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

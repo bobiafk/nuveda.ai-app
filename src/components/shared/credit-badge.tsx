@@ -22,7 +22,7 @@ export function CreditBadge({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 rounded-full border border-white/10 glass",
+        "flex items-center gap-2 rounded-full border border-border glass",
         size === "sm" ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm",
         isLow && "border-red-400/30",
         className

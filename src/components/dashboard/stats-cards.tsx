@@ -14,7 +14,7 @@ interface StatCardProps {
 
 function StatCard({ label, value, subtitle, icon: Icon, gradientFrom, gradientTo }: StatCardProps) {
   return (
-    <div className="relative rounded-2xl glass border border-white/10 p-5 overflow-hidden group hover:border-white/15 transition-colors">
+    <div className="relative rounded-2xl glass border border-border p-5 overflow-hidden group hover:border-white/15 transition-colors">
       <div
         className="absolute inset-0 opacity-[0.06] group-hover:opacity-[0.10] transition-opacity"
         style={{

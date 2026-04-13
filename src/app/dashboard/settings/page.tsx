@@ -24,7 +24,7 @@ export default function SettingsPage() {
           <User size={16} className="text-primary" />
           Profile
         </div>
-        <div className="rounded-xl glass border border-white/10 p-5 space-y-5">
+        <div className="rounded-xl glass border border-border p-5 space-y-5">
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16">
               <AvatarFallback className="bg-primary/10 text-primary text-lg font-semibold">
@@ -45,7 +45,7 @@ export default function SettingsPage() {
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="rounded-xl bg-white/5 border-white/10"
+                className="rounded-xl bg-input/50 border-border"
               />
             </div>
             <div className="space-y-2">
@@ -53,7 +53,7 @@ export default function SettingsPage() {
               <Input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="rounded-xl bg-white/5 border-white/10"
+                className="rounded-xl bg-input/50 border-border"
               />
             </div>
           </div>
@@ -71,7 +71,7 @@ export default function SettingsPage() {
           <Link2 size={16} className="text-primary" />
           Connected Accounts
         </div>
-        <div className="rounded-xl glass border border-white/10 p-5 space-y-4">
+        <div className="rounded-xl glass border border-border p-5 space-y-4">
           {[
             { name: "Google", connected: true },
             { name: "GitHub", connected: false },
@@ -102,7 +102,7 @@ export default function SettingsPage() {
           <Bell size={16} className="text-primary" />
           Notifications
         </div>
-        <div className="rounded-xl glass border border-white/10 p-5 space-y-4">
+        <div className="rounded-xl glass border border-border p-5 space-y-4">
           {[
             { label: "Generation completed", description: "Notify when a generation finishes", defaultChecked: true },
             { label: "Credit alerts", description: "Alert when credits are running low", defaultChecked: true },
@@ -126,7 +126,7 @@ export default function SettingsPage() {
           <Key size={16} className="text-primary" />
           API Keys
         </div>
-        <div className="rounded-xl glass border border-white/10 p-5">
+        <div className="rounded-xl glass border border-border p-5">
           <p className="text-sm text-muted-foreground mb-3">
             API access is available on Professional and Enterprise plans.
           </p>
@@ -134,7 +134,7 @@ export default function SettingsPage() {
             <Input
               value="sk-••••••••••••••••••••••••"
               readOnly
-              className="rounded-xl bg-white/5 border-white/10 font-mono text-xs"
+              className="rounded-xl bg-input/50 border-border font-mono text-xs"
             />
             <Button variant="outline" size="sm" className="rounded-xl text-xs shrink-0">
               Regenerate

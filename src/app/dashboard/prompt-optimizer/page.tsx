@@ -54,14 +54,14 @@ export default function PromptOptimizerPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Enter the prompt you want to optimize..."
-              className="min-h-[120px] resize-none rounded-xl bg-white/5 border-white/10 text-sm"
+              className="min-h-[120px] resize-none rounded-xl bg-input/50 border-border text-sm"
             />
           </div>
 
           <div className="space-y-2">
             <Label className="text-xs font-medium">Optimization Mode</Label>
             <Select value={mode} onValueChange={setMode}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -94,7 +94,7 @@ export default function PromptOptimizerPage() {
               </Button>
             </div>
 
-            <div className="rounded-xl glass border border-white/10 p-4">
+            <div className="rounded-xl glass border border-border p-4">
               <p className="text-sm leading-relaxed">{output}</p>
             </div>
 

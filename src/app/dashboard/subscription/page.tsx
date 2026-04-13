@@ -17,7 +17,7 @@ export default function SubscriptionPage() {
       <PageHeader title="Subscription" subtitle="Manage your plan and credits" />
 
       {/* Credit usage */}
-      <div className="rounded-2xl glass border border-white/10 p-6">
+      <div className="rounded-2xl glass border border-border p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
             <h3 className="text-sm font-semibold mb-1 flex items-center gap-2">
@@ -40,15 +40,15 @@ export default function SubscriptionPage() {
           <Progress value={42} className="h-2.5" />
 
           <div className="grid grid-cols-3 gap-4 mt-4">
-            <div className="rounded-xl bg-white/5 p-3">
+            <div className="rounded-xl bg-input/50 p-3">
               <p className="text-xs text-muted-foreground mb-1">Used this month</p>
               <p className="text-lg font-bold tabular-nums">1,153</p>
             </div>
-            <div className="rounded-xl bg-white/5 p-3">
+            <div className="rounded-xl bg-input/50 p-3">
               <p className="text-xs text-muted-foreground mb-1">Avg. daily usage</p>
               <p className="text-lg font-bold tabular-nums">96</p>
             </div>
-            <div className="rounded-xl bg-white/5 p-3">
+            <div className="rounded-xl bg-input/50 p-3">
               <p className="text-xs text-muted-foreground mb-1">Efficiency bonus</p>
               <p className="text-lg font-bold tabular-nums flex items-center gap-1">
                 1.2x
@@ -74,7 +74,7 @@ export default function SubscriptionPage() {
                   "relative rounded-2xl border p-5 transition-all",
                   isCurrent
                     ? "bg-primary/10 border-primary/30 glow-frost"
-                    : "glass border-white/10 hover:border-white/15"
+                    : "glass border-border hover:border-white/15"
                 )}
               >
                 {tier.popular && (

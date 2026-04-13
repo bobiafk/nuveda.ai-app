@@ -56,7 +56,7 @@ export default function AudioGenerationPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Voice</Label>
             <Select value={voice} onValueChange={setVoice}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -86,7 +86,7 @@ export default function AudioGenerationPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Output Format</Label>
             <Select value={format} onValueChange={setFormat}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

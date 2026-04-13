@@ -61,7 +61,7 @@ export function PromptInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="min-h-[100px] resize-none rounded-xl bg-white/5 border-white/10 text-sm"
+        className="min-h-25 resize-none rounded-xl bg-input/50 border-border text-sm"
       />
     </div>
   );

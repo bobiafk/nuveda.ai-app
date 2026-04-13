@@ -69,14 +69,14 @@ export default function ImageGenerationPage() {
               value={negativePrompt}
               onChange={(e) => setNegativePrompt(e.target.value)}
               placeholder="Things to exclude from the generation..."
-              className="min-h-[60px] resize-none rounded-xl bg-white/5 border-white/10 text-sm"
+              className="min-h-[60px] resize-none rounded-xl bg-input/50 border-border text-sm"
             />
           </div>
 
           <div className="space-y-2">
             <Label className="text-xs font-medium">Model</Label>
             <Select value={model} onValueChange={setModel}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -92,7 +92,7 @@ export default function ImageGenerationPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Style Preset</Label>
             <Select value={style} onValueChange={setStyle}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -108,7 +108,7 @@ export default function ImageGenerationPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Aspect Ratio</Label>
             <Select value={aspect} onValueChange={setAspect}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -141,7 +141,7 @@ export default function ImageGenerationPage() {
               value={seed}
               onChange={(e) => setSeed(e.target.value)}
               placeholder="Random"
-              className="rounded-xl bg-white/5 border-white/10 text-sm"
+              className="rounded-xl bg-input/50 border-border text-sm"
             />
           </div>
         </>

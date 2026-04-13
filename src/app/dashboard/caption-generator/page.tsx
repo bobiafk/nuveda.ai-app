@@ -65,7 +65,7 @@ export default function CaptionGeneratorPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Language</Label>
             <Select value={language} onValueChange={setLanguage}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -81,7 +81,7 @@ export default function CaptionGeneratorPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Caption Style</Label>
             <Select value={style} onValueChange={setStyle}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -97,7 +97,7 @@ export default function CaptionGeneratorPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Output Format</Label>
             <Select value={format} onValueChange={setFormat}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

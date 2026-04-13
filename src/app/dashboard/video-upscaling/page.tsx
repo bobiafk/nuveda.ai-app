@@ -45,7 +45,7 @@ export default function VideoUpscalingPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Target Resolution</Label>
             <Select value={resolution} onValueChange={setResolution}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -58,7 +58,7 @@ export default function VideoUpscalingPage() {
             </Select>
           </div>
 
-          <div className="flex items-center justify-between rounded-xl bg-white/5 border border-white/10 p-3">
+          <div className="flex items-center justify-between rounded-xl bg-input/50 border border-border p-3">
             <div>
               <Label className="text-xs font-medium">Frame Interpolation</Label>
               <p className="text-[11px] text-muted-foreground mt-0.5">

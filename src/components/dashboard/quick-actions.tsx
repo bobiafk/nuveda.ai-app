@@ -19,7 +19,7 @@ export function QuickActions() {
           <Button
             variant="outline"
             size="sm"
-            className="rounded-xl gap-2 border-white/10 hover:border-white/15 hover:bg-white/8 transition-all"
+            className="rounded-xl gap-2 border-border hover:border-white/15 hover:bg-white/8 transition-all"
           >
             <action.icon size={14} style={{ color: action.color }} />
             {action.label}

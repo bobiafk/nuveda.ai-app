@@ -68,7 +68,7 @@ export default function VoiceGenerationPage() {
               </TabsList>
               <TabsContent value="preset" className="mt-3">
                 <Select value={presetVoice} onValueChange={setPresetVoice}>
-                  <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+                  <SelectTrigger className="rounded-xl bg-input/50 border-border">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -93,7 +93,7 @@ export default function VoiceGenerationPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Emotion</Label>
             <Select value={emotion} onValueChange={setEmotion}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

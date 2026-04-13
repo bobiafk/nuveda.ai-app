@@ -18,7 +18,7 @@ export function GlowCard({
   return (
     <div
       className={cn(
-        "group relative rounded-2xl glass border border-white/10 p-5 transition-all duration-300",
+        "group relative rounded-2xl glass border border-border p-5 transition-all duration-300",
         "hover:border-white/15 hover:bg-white/8",
         onClick && "cursor-pointer",
         className

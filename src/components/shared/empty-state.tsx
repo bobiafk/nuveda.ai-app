@@ -23,7 +23,7 @@ export function EmptyState({
         className
       )}
     >
-      <div className="rounded-2xl bg-white/5 backdrop-blur-sm p-4 mb-4">
+      <div className="rounded-2xl bg-input/50 backdrop-blur-sm p-4 mb-4">
         <Icon size={32} className="text-muted-foreground" />
       </div>
       <h3 className="text-base font-semibold mb-1">{title}</h3>

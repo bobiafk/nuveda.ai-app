@@ -87,7 +87,7 @@ export default function AiAvatarVideoPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Expression</Label>
             <Select value={expression} onValueChange={setExpression}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -103,7 +103,7 @@ export default function AiAvatarVideoPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Background</Label>
             <Select value={background} onValueChange={setBackground}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

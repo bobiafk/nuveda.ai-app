@@ -53,7 +53,7 @@ export function FileUploadZone({
       {label && <Label className="text-xs font-medium">{label}</Label>}
 
       {value ? (
-        <div className="flex items-center gap-3 rounded-xl bg-white/5 border border-white/10 p-3">
+        <div className="flex items-center gap-3 rounded-xl bg-input/50 border border-border p-3">
           <config.icon size={18} className="text-muted-foreground shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium truncate">{value.name}</p>
@@ -73,7 +73,7 @@ export function FileUploadZone({
       ) : (
         <label
           className={cn(
-            "flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-white/10 bg-white/[0.03] p-8 cursor-pointer transition-colors",
+            "flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-white/[0.03] p-8 cursor-pointer transition-colors",
             isDragging && "border-primary bg-primary/10"
           )}
           onDragOver={(e) => {

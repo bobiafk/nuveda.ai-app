@@ -61,7 +61,7 @@ export default function KlingMotionPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Motion Type</Label>
             <Select value={motionType} onValueChange={setMotionType}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -91,7 +91,7 @@ export default function KlingMotionPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Camera Movement</Label>
             <Select value={camera} onValueChange={setCamera}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

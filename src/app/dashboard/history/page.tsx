@@ -75,7 +75,7 @@ export default function HistoryPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search generations..."
-            className="pl-9 h-9 rounded-xl bg-white/5 border-white/10 text-sm"
+            className="pl-9 h-9 rounded-xl bg-input/50 border-border text-sm"
           />
         </div>
         <Tabs value={activeFilter} onValueChange={setActiveFilter}>
@@ -93,7 +93,7 @@ export default function HistoryPage() {
         {filtered.map((item) => (
           <div
             key={item.id}
-            className="flex items-center gap-4 rounded-xl glass border border-white/10 p-4 hover:border-white/15 transition-colors group"
+            className="flex items-center gap-4 rounded-xl glass border border-border p-4 hover:border-white/15 transition-colors group"
           >
             <div
               className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0"

@@ -45,7 +45,7 @@ export default function ImageUpscalingPage() {
           <div className="space-y-2">
             <Label className="text-xs font-medium">Scale Factor</Label>
             <Select value={scale} onValueChange={setScale}>
-              <SelectTrigger className="rounded-xl bg-white/5 border-white/10">
+              <SelectTrigger className="rounded-xl bg-input/50 border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

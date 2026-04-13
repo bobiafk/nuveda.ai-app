@@ -24,11 +24,11 @@ export function GenerationResult({
     return (
       <div
         className={cn(
-          "rounded-xl border border-white/10 glass overflow-hidden",
+          "rounded-xl border border-border glass overflow-hidden",
           className
         )}
       >
-        <div className="aspect-square bg-white/5 backdrop-blur-sm flex items-center justify-center relative">
+        <div className="aspect-square bg-input/50 backdrop-blur-sm flex items-center justify-center relative">
           <div className="flex flex-col items-center gap-3">
             <div
               className="h-10 w-10 border-2 border-t-transparent rounded-full animate-spin"
@@ -46,7 +46,7 @@ export function GenerationResult({
   return (
     <div
       className={cn(
-        "group rounded-xl border border-white/10 glass overflow-hidden hover:border-white/15 transition-colors",
+        "group rounded-xl border border-border glass overflow-hidden hover:border-white/15 transition-colors",
         className
       )}
     >
@@ -76,7 +76,7 @@ export function GenerationResult({
         </div>
       </div>
       {title && (
-        <div className="p-3 border-t border-white/8">
+        <div className="p-3 border-t border-border">
           <p className="text-xs truncate">{title}</p>
         </div>
       )}

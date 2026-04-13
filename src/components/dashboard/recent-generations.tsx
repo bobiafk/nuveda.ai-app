@@ -43,7 +43,7 @@ export function RecentGenerations() {
           {recentItems.map((item) => (
             <div
               key={item.id}
-              className="shrink-0 w-48 rounded-xl glass border border-white/10 overflow-hidden group hover:border-white/15 transition-colors cursor-pointer"
+              className="shrink-0 w-48 rounded-xl glass border border-border overflow-hidden group hover:border-white/15 transition-colors cursor-pointer"
             >
               <div
                 className="h-28 flex items-center justify-center relative"
