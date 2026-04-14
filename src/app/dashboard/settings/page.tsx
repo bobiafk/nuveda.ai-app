@@ -15,6 +15,7 @@ export default function SettingsPage() {
   const [email, setEmail] = useState("john@example.com");
 
   return (
+    <div className="h-full overflow-y-auto">
     <div className="p-4 md:p-6 max-w-3xl mx-auto space-y-8 animate-fade-in">
       <PageHeader title="Settings" subtitle="Manage your account preferences" />
 
@@ -142,6 +143,7 @@ export default function SettingsPage() {
           </div>
         </div>
       </section>
+    </div>
     </div>
   );
 }

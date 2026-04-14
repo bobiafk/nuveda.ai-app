@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Coins } from "lucide-react";
+import { ArrowLeft, Coins, Sparkles } from "lucide-react";
 import { type Feature } from "@/lib/features";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+
 interface ToolLayoutProps {
   feature: Feature;
   configPanel: React.ReactNode;
@@ -21,7 +21,7 @@ export function ToolLayout({
   isGenerating,
 }: ToolLayoutProps) {
   return (
-    <div className="flex h-full animate-fade-in">
+    <div className="flex h-full overflow-hidden animate-fade-in">
       {/* Config panel */}
       <div className="w-full md:w-95 lg:w-100 shrink-0 border-r border-border flex flex-col overflow-hidden glass-strong">
         <div className="px-5 py-4 border-b border-border">
@@ -46,42 +46,54 @@ export function ToolLayout({
         </div>
 
         <ScrollArea className="flex-1 min-h-0">
-          <div className="p-5 space-y-5">
-            {configPanel}
-          </div>
+          <div className="p-5 space-y-5">{configPanel}</div>
         </ScrollArea>
 
-        <div className="shrink-0 p-4 border-t border-border">
-          <div className="flex items-center justify-between mb-3">
+        <div className="shrink-0 p-4 border-t border-border space-y-3">
+          {/* Credits row */}
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Coins size={12} />
-              <span>Cost: <strong className="text-foreground">{feature.creditCost} credits</strong></span>
+              <span>
+                Cost:{" "}
+                <strong className="text-foreground">
+                  {feature.creditCost} credits
+                </strong>
+              </span>
             </div>
-            <span className="text-xs text-muted-foreground tabular-nums">847 remaining</span>
+            <span className="text-xs text-muted-foreground tabular-nums">
+              847 remaining
+            </span>
           </div>
-          <Button
-            className="w-full rounded-xl h-11 font-semibold gradient-primary text-white border-0 hover:opacity-90 transition-opacity"
+
+          {/* Premium Generate button */}
+          <button
+            className="btn-generate"
             onClick={onGenerate}
             disabled={isGenerating}
           >
             {isGenerating ? (
               <span className="flex items-center gap-2">
-                <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Generating...
+                <span className="h-4 w-4 rounded-full border-2 border-white/25 border-t-white animate-spin" />
+                Generating…
               </span>
             ) : (
-              "Generate"
+              <span className="flex items-center gap-2.5">
+                <Sparkles size={14} className="opacity-90" />
+                Generate
+                <span className="flex items-center gap-1 rounded-md bg-white/15 px-1.5 py-0.5 text-[11px] font-semibold tracking-wide">
+                  {feature.creditCost}
+                </span>
+              </span>
             )}
-          </Button>
+          </button>
         </div>
       </div>
 
       {/* Result panel */}
-      <div className="hidden md:flex flex-1 flex-col bg-muted/30">
-        <ScrollArea className="flex-1">
-          <div className="p-6">
-            {resultPanel}
-          </div>
+      <div className="hidden md:flex flex-1 min-h-0 flex-col bg-muted/30 overflow-hidden">
+        <ScrollArea className="flex-1 h-full">
+          <div className="p-6">{resultPanel}</div>
         </ScrollArea>
       </div>
     </div>

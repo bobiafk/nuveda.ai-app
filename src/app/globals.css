@@ -330,3 +330,97 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+@keyframes btn-shine {
+  0% { background-position: 200% 50%; }
+  100% { background-position: -200% 50%; }
+}
+
+/* ── Premium generate button ── */
+.btn-generate {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  border: none;
+  overflow: hidden;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  background: linear-gradient(
+    135deg,
+    oklch(0.65 0.22 280) 0%,
+    oklch(0.58 0.20 250) 50%,
+    oklch(0.65 0.22 280) 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient-shift 5s ease infinite;
+  box-shadow:
+    0 0 18px oklch(0.65 0.22 280 / 0.35),
+    0 4px 14px oklch(0 0 0 / 0.30);
+  letter-spacing: 0.01em;
+}
+
+.btn-generate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    oklch(1 0 0 / 0.18) 50%,
+    transparent 80%
+  );
+  background-size: 250% 100%;
+  animation: btn-shine 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.btn-generate:hover:not(:disabled) {
+  transform: scale(1.01) translateY(-1px);
+  box-shadow:
+    0 0 28px oklch(0.65 0.22 280 / 0.50),
+    0 8px 22px oklch(0 0 0 / 0.35);
+}
+
+.btn-generate:active:not(:disabled) {
+  transform: scale(0.99) translateY(0);
+  box-shadow:
+    0 0 16px oklch(0.65 0.22 280 / 0.30),
+    0 2px 8px oklch(0 0 0 / 0.25);
+}
+
+.btn-generate:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  animation: none;
+  box-shadow: none;
+}
+
+.btn-generate:disabled::before {
+  animation: none;
+}
+
+:root.light .btn-generate {
+  background: linear-gradient(
+    135deg,
+    oklch(0.52 0.22 278) 0%,
+    oklch(0.46 0.20 250) 50%,
+    oklch(0.52 0.22 278) 100%
+  );
+  background-size: 200% 200%;
+  box-shadow:
+    0 0 18px oklch(0.52 0.22 278 / 0.25),
+    0 4px 14px oklch(0 0 0 / 0.14);
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}

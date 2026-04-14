@@ -3,15 +3,25 @@
 import { useState } from "react";
 import { getFeatureById } from "@/lib/features";
 import { ToolLayout } from "@/components/tools/tool-layout";
-import { ToolHistoryPanel } from "@/components/tools/tool-history-panel";
+import { ToolHistoryPanel, type GenerationItem } from "@/components/tools/tool-history-panel";
 import { PromptInput } from "@/components/tools/prompt-input";
 import { FileUploadZone } from "@/components/tools/file-upload-zone";
+import { IconPillSelector, type PillOption } from "@/components/tools/icon-pill-selector";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const feature = getFeatureById("voice-generation")!;
+
+const SAMPLE_VOICES: GenerationItem[] = [
+  { id: "loading", status: "processing", prompt: "Kai — Welcome to our brand-new product launch experience!" },
+  { id: "s1", status: "completed", url: "#", prompt: "Aria — Hello! Welcome to our platform, how can I help you today?", duration: "0:08" },
+  { id: "s2", status: "completed", url: "#", prompt: "Marcus — The quarterly results exceeded all expectations this year.", duration: "0:06" },
+  { id: "s3", status: "completed", url: "#", prompt: "Luna — Take a deep breath and let your worries fade away.", duration: "0:05" },
+  { id: "s4", status: "completed", url: "#", prompt: "Kai — Are you ready to crush your workout today? Let's go!", duration: "0:07" },
+  { id: "s5", status: "completed", url: "#", prompt: "Sage — Today's briefing covers three key market developments.", duration: "0:09" },
+];
 
 const presetVoices = [
   { value: "aria", label: "Aria — Warm, friendly" },
@@ -21,7 +31,7 @@ const presetVoices = [
   { value: "sage", label: "Sage — Professional, neutral" },
 ];
 
-const emotions = [
+const emotionOptions: PillOption[] = [
   { value: "neutral", label: "Neutral" },
   { value: "happy", label: "Happy" },
   { value: "sad", label: "Sad" },
@@ -38,11 +48,31 @@ export default function VoiceGenerationPage() {
   const [emotion, setEmotion] = useState("neutral");
   const [speed, setSpeed] = useState([1.0]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generations, setGenerations] = useState<GenerationItem[]>(SAMPLE_VOICES);
 
   const handleGenerate = () => {
     setIsGenerating(true);
-    setTimeout(() => setIsGenerating(false), 3000);
+    const newItem: GenerationItem = {
+      id: `gen-${Date.now()}`,
+      status: "processing",
+      prompt: text,
+    };
+    setGenerations((prev) => [newItem, ...prev]);
+
+    setTimeout(() => {
+      setIsGenerating(false);
+      setGenerations((prev) =>
+        prev.map((g) =>
+          g.id === newItem.id ? { ...g, status: "completed" as const } : g,
+        ),
+      );
+    }, 3000);
   };
+
+  const handleDelete = (id: string) =>
+    setGenerations((prev) => prev.filter((g) => g.id !== id));
+  const handleDismiss = (id: string) =>
+    setGenerations((prev) => prev.filter((g) => g.id !== id));
 
   return (
     <ToolLayout
@@ -60,11 +90,14 @@ export default function VoiceGenerationPage() {
           />
 
           <div className="space-y-2">
-            <Label className="text-xs font-medium">Voice Source</Label>
             <Tabs value={voiceMode} onValueChange={setVoiceMode}>
               <TabsList className="w-full">
-                <TabsTrigger value="preset" className="flex-1 text-xs">Preset Voice</TabsTrigger>
-                <TabsTrigger value="clone" className="flex-1 text-xs">Voice Clone</TabsTrigger>
+                <TabsTrigger value="preset" className="flex-1 text-xs">
+                  Preset Voice
+                </TabsTrigger>
+                <TabsTrigger value="clone" className="flex-1 text-xs">
+                  Voice Clone
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="preset" className="mt-3">
                 <Select value={presetVoice} onValueChange={setPresetVoice}>
@@ -90,26 +123,22 @@ export default function VoiceGenerationPage() {
             </Tabs>
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-xs font-medium">Emotion</Label>
-            <Select value={emotion} onValueChange={setEmotion}>
-              <SelectTrigger className="rounded-xl bg-input/50 border-border">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {emotions.map((e) => (
-                  <SelectItem key={e.value} value={e.value}>
-                    {e.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          {/* Emotion */}
+          <IconPillSelector
+            label="Emotion"
+            options={emotionOptions}
+            value={emotion}
+            onChange={setEmotion}
+            columns={3}
+          />
 
+          {/* Speed */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-xs font-medium">Speed</Label>
-              <span className="text-xs text-muted-foreground tabular-nums">{speed[0].toFixed(1)}x</span>
+              <span className="text-xs text-muted-foreground tabular-nums">
+                {speed[0].toFixed(1)}×
+              </span>
             </div>
             <Slider
               value={speed}
@@ -121,7 +150,14 @@ export default function VoiceGenerationPage() {
           </div>
         </>
       }
-      resultPanel={<ToolHistoryPanel feature={feature} />}
+      resultPanel={
+        <ToolHistoryPanel
+          feature={feature}
+          generations={generations}
+          onDelete={handleDelete}
+          onDismiss={handleDismiss}
+        />
+      }
     />
   );
 }

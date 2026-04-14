@@ -3,15 +3,23 @@
 import { useState } from "react";
 import { getFeatureById } from "@/lib/features";
 import { ToolLayout } from "@/components/tools/tool-layout";
-import { ToolHistoryPanel } from "@/components/tools/tool-history-panel";
+import { ToolHistoryPanel, type GenerationItem } from "@/components/tools/tool-history-panel";
 import { PromptInput } from "@/components/tools/prompt-input";
+import { IconPillSelector, type PillOption } from "@/components/tools/icon-pill-selector";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 
 const feature = getFeatureById("audio-generation")!;
 
-const voices = [
+const SAMPLE_AUDIO: GenerationItem[] = [
+  { id: "loading", status: "processing", prompt: "Dark cinematic ambient soundscape with deep bass" },
+  { id: "s1", status: "completed", url: "#", prompt: "Upbeat electronic background music", duration: "1:24" },
+  { id: "s2", status: "completed", url: "#", prompt: "Calm ambient meditation soundtrack", duration: "2:05" },
+  { id: "s3", status: "completed", url: "#", prompt: "Epic orchestral cinematic theme", duration: "1:45" },
+  { id: "s4", status: "completed", url: "#", prompt: "Jazz piano lounge session", duration: "3:12" },
+];
+
+const voiceOptions: PillOption[] = [
   { value: "alloy", label: "Alloy" },
   { value: "echo", label: "Echo" },
   { value: "fable", label: "Fable" },
@@ -20,7 +28,7 @@ const voices = [
   { value: "shimmer", label: "Shimmer" },
 ];
 
-const formats = [
+const formatOptions: PillOption[] = [
   { value: "mp3", label: "MP3" },
   { value: "wav", label: "WAV" },
   { value: "ogg", label: "OGG" },
@@ -33,11 +41,31 @@ export default function AudioGenerationPage() {
   const [speed, setSpeed] = useState([1.0]);
   const [format, setFormat] = useState("mp3");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generations, setGenerations] = useState<GenerationItem[]>(SAMPLE_AUDIO);
 
   const handleGenerate = () => {
     setIsGenerating(true);
-    setTimeout(() => setIsGenerating(false), 3000);
+    const newItem: GenerationItem = {
+      id: `gen-${Date.now()}`,
+      status: "processing",
+      prompt,
+    };
+    setGenerations((prev) => [newItem, ...prev]);
+
+    setTimeout(() => {
+      setIsGenerating(false);
+      setGenerations((prev) =>
+        prev.map((g) =>
+          g.id === newItem.id ? { ...g, status: "completed" as const } : g,
+        ),
+      );
+    }, 3000);
   };
+
+  const handleDelete = (id: string) =>
+    setGenerations((prev) => prev.filter((g) => g.id !== id));
+  const handleDismiss = (id: string) =>
+    setGenerations((prev) => prev.filter((g) => g.id !== id));
 
   return (
     <ToolLayout
@@ -53,26 +81,22 @@ export default function AudioGenerationPage() {
             placeholder="Enter the text you want to convert to audio..."
           />
 
-          <div className="space-y-2">
-            <Label className="text-xs font-medium">Voice</Label>
-            <Select value={voice} onValueChange={setVoice}>
-              <SelectTrigger className="rounded-xl bg-input/50 border-border">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {voices.map((v) => (
-                  <SelectItem key={v.value} value={v.value}>
-                    {v.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          {/* Voice selector */}
+          <IconPillSelector
+            label="Voice"
+            options={voiceOptions}
+            value={voice}
+            onChange={setVoice}
+            columns={3}
+          />
 
+          {/* Speed */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-xs font-medium">Speed</Label>
-              <span className="text-xs text-muted-foreground tabular-nums">{speed[0].toFixed(1)}x</span>
+              <span className="text-xs text-muted-foreground tabular-nums">
+                {speed[0].toFixed(1)}×
+              </span>
             </div>
             <Slider
               value={speed}
@@ -83,24 +107,24 @@ export default function AudioGenerationPage() {
             />
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-xs font-medium">Output Format</Label>
-            <Select value={format} onValueChange={setFormat}>
-              <SelectTrigger className="rounded-xl bg-input/50 border-border">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {formats.map((f) => (
-                  <SelectItem key={f.value} value={f.value}>
-                    {f.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          {/* Output format */}
+          <IconPillSelector
+            label="Output Format"
+            options={formatOptions}
+            value={format}
+            onChange={setFormat}
+            columns={4}
+          />
         </>
       }
-      resultPanel={<ToolHistoryPanel feature={feature} />}
+      resultPanel={
+        <ToolHistoryPanel
+          feature={feature}
+          generations={generations}
+          onDelete={handleDelete}
+          onDismiss={handleDismiss}
+        />
+      }
     />
   );
 }

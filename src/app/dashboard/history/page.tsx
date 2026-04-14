@@ -65,6 +65,7 @@ export default function HistoryPage() {
   });
 
   return (
+    <div className="h-full overflow-y-auto">
     <div className="p-4 md:p-6 max-w-5xl mx-auto space-y-6 animate-fade-in">
       <PageHeader title="Generation History" subtitle="View all your past generations across tools" />
 
@@ -149,6 +150,7 @@ export default function HistoryPage() {
           Next
         </Button>
       </div>
+    </div>
     </div>
   );
 }

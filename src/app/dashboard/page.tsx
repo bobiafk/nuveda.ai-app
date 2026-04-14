@@ -9,6 +9,7 @@ import { QuickActions } from "@/components/dashboard/quick-actions";
 
 export default function DashboardPage() {
   return (
+    <div className="h-full overflow-y-auto">
     <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-8 animate-fade-in">
       <div>
         <PageHeader
@@ -34,6 +35,7 @@ export default function DashboardPage() {
       </div>
 
       <RecentGenerations />
+    </div>
     </div>
   );
 }

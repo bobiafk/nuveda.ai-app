@@ -13,6 +13,7 @@ export default function SubscriptionPage() {
   const [currentPlan] = useState("creator");
 
   return (
+    <div className="h-full overflow-y-auto">
     <div className="p-4 md:p-6 max-w-5xl mx-auto space-y-8 animate-fade-in">
       <PageHeader title="Subscription" subtitle="Manage your plan and credits" />
 
@@ -122,6 +123,7 @@ export default function SubscriptionPage() {
           })}
         </div>
       </div>
+    </div>
     </div>
   );
 }
