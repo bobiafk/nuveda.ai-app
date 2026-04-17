@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EliteFans AI Studio",
+  title: "NuvedaAI",
   description:
     "AI-powered content creation platform — generate images, audio, video, and more.",
 };

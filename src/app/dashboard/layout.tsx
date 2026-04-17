@@ -1,5 +1,6 @@
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { DashboardHeader } from "@/components/dashboard/header";
+import { AuthGate } from "@/components/auth/auth-gate";
 
 export default function DashboardLayout({
   children,
@@ -7,12 +8,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen overflow-hidden">
-      <DashboardSidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader />
-        <main className="flex-1 overflow-hidden">{children}</main>
+    <AuthGate>
+      <div className="flex h-screen overflow-hidden">
+        <DashboardSidebar />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <DashboardHeader />
+          <main className="flex-1 overflow-hidden">{children}</main>
+        </div>
       </div>
-    </div>
+    </AuthGate>
   );
 }

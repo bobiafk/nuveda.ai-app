@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   History,
@@ -15,8 +15,10 @@ import {
   Pin,
   PinOff,
   ChevronRight,
+  LogOut,
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { features } from "@/lib/features";
 import { Button } from "@/components/ui/button";
@@ -29,6 +31,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/hooks/use-auth";
+
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
 interface NavItem {
   label: string;
@@ -152,13 +162,25 @@ function SidebarToolItem({
 
 function DesktopSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { resolvedTheme, setTheme } = useTheme();
+  const { user, signOut } = useAuth();
   const [pinned, setPinned] = useState(true);
   const [hovered, setHovered] = useState(false);
   const [mounted, setMounted] = useState(false);
   const leaveTimer = useRef<ReturnType<typeof setTimeout>>(null);
 
   useEffect(() => setMounted(true), []);
+
+  const handleSignOut = () => {
+    signOut();
+    toast.success("Signed out");
+    router.push("/sign-in");
+  };
+
+  const displayName = user?.name ?? "Guest";
+  const displayEmail = user?.email ?? "";
+  const initials = getInitials(displayName);
 
   const isToolActive = features.some((f) => pathname.startsWith(f.route));
   const expanded = pinned || hovered || isToolActive;
@@ -217,7 +239,7 @@ function DesktopSidebar() {
               )}
             >
               <span className="text-sm font-bold tracking-tight font-display truncate">
-                EliteFans
+                NuvedaAI
               </span>
               <span className="text-[9px] text-sidebar-foreground/40 uppercase tracking-wider">
                 AI Studio
@@ -319,16 +341,16 @@ function DesktopSidebar() {
           >
             <Avatar className="h-8 w-8 shrink-0 ring-2 ring-sidebar-border">
               <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
-                JD
+                {initials}
               </AvatarFallback>
             </Avatar>
             {expanded && (
               <div className="flex flex-col min-w-0">
                 <span className="text-sm font-medium truncate leading-tight">
-                  John Doe
+                  {displayName}
                 </span>
-                <span className="text-[10px] text-sidebar-foreground/40 leading-tight">
-                  Pro Plan
+                <span className="text-[10px] text-sidebar-foreground/40 leading-tight truncate">
+                  {displayEmail || "Pro Plan"}
                 </span>
               </div>
             )}
@@ -359,17 +381,18 @@ function DesktopSidebar() {
               </TooltipContent>
             </Tooltip>
 
-            {/* Credits */}
+            {/* Sign out */}
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link href="/dashboard/subscription">
-                  <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-primary/10 hover:bg-primary/20 transition-all duration-200 shrink-0">
-                    <Zap size={14} className="text-primary" />
-                  </div>
-                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="h-8 w-8 flex items-center justify-center rounded-lg text-sidebar-foreground/50 hover:text-destructive hover:bg-destructive/10 transition-all duration-200 shrink-0"
+                >
+                  <LogOut size={15} />
+                </button>
               </TooltipTrigger>
               <TooltipContent side="right" sideOffset={8}>
-                847 credits remaining
+                Sign out
               </TooltipContent>
             </Tooltip>
           </div>
@@ -381,12 +404,25 @@ function DesktopSidebar() {
 
 function MobileSidebarContent({ onClose }: { onClose: () => void }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { resolvedTheme, setTheme } = useTheme();
+  const { user, signOut } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   const isDark = resolvedTheme === "dark";
+
+  const displayName = user?.name ?? "Guest";
+  const displayEmail = user?.email ?? "";
+  const initials = getInitials(displayName);
+
+  const handleSignOut = () => {
+    signOut();
+    onClose();
+    toast.success("Signed out");
+    router.push("/sign-in");
+  };
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
@@ -401,7 +437,7 @@ function MobileSidebarContent({ onClose }: { onClose: () => void }) {
         </div>
         <div className="flex flex-col">
           <span className="text-sm font-bold tracking-tight font-display">
-            EliteFans
+            NuvedaAI
           </span>
           <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
             AI Studio
@@ -473,30 +509,45 @@ function MobileSidebarContent({ onClose }: { onClose: () => void }) {
         </div>
       </ScrollArea>
 
-      <div className="px-4 py-3 border-t border-border flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <Avatar className="h-8 w-8">
+      <div className="px-4 py-3 border-t border-border flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <Avatar className="h-8 w-8 shrink-0">
             <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
-              JD
+              {initials}
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium leading-none">John Doe</span>
-            <span className="text-[11px] text-muted-foreground">Pro Plan</span>
+          <div className="flex flex-col min-w-0">
+            <span className="text-sm font-medium leading-none truncate">
+              {displayName}
+            </span>
+            <span className="text-[11px] text-muted-foreground truncate">
+              {displayEmail || "Pro Plan"}
+            </span>
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          onClick={() => setTheme(isDark ? "light" : "dark")}
-        >
-          {mounted ? (
-            isDark ? <Sun size={14} /> : <Moon size={14} />
-          ) : (
-            <div className="h-3.5 w-3.5" />
-          )}
-        </Button>
+        <div className="flex items-center gap-1 shrink-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+          >
+            {mounted ? (
+              isDark ? <Sun size={14} /> : <Moon size={14} />
+            ) : (
+              <div className="h-3.5 w-3.5" />
+            )}
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            onClick={handleSignOut}
+            aria-label="Sign out"
+          >
+            <LogOut size={14} />
+          </Button>
+        </div>
       </div>
     </div>
   );
