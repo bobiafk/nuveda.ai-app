@@ -52,6 +52,13 @@ const aspectOptions: PillOption[] = [
   { value: "3:2", label: "3:2", shapeClass: ASPECT_SHAPES["3:2"] },
 ];
 
+const resolutionOptions = [
+  { value: "hd", label: "HD", sub: "1280×720" },
+  { value: "fhd", label: "Full HD", sub: "1920×1080" },
+  { value: "2k", label: "2K", sub: "2560×1440" },
+  { value: "4k", label: "4K", sub: "3840×2160" },
+];
+
 export default function ImageGenerationPage() {
   const [prompt, setPrompt] = useState("");
   const [negativePrompt, setNegativePrompt] = useState("");
@@ -60,6 +67,7 @@ export default function ImageGenerationPage() {
   const [aspect, setAspect] = useState("1:1");
   const [seed, setSeed] = useState("");
   const [batchSize, setBatchSize] = useState(1);
+  const [resolution, setResolution] = useState("fhd");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generations, setGenerations] = useState<GenerationItem[]>(SAMPLE_IMAGES);
   const [showNegative, setShowNegative] = useState(false);
@@ -188,13 +196,48 @@ export default function ImageGenerationPage() {
             columns={5}
           />
 
-          {/* Batch size — stepper */}
+          {/* Resolution — segmented control */}
+          <div className="space-y-2.5">
+            <Label className="text-xs font-medium">Resolution</Label>
+            <div className="grid grid-cols-4 gap-1.5">
+              {resolutionOptions.map((opt) => {
+                const isSelected = resolution === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setResolution(opt.value)}
+                    className={cn(
+                      "flex flex-col items-center gap-0.5 rounded-xl border py-2.5 px-1 text-center transition-all duration-150 select-none outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                      isSelected
+                        ? "bg-primary text-primary-foreground border-primary shadow-[0_0_12px_-2px_var(--color-primary)] shadow-primary/40"
+                        : "bg-white/4 border-white/10 text-muted-foreground hover:bg-white/8 hover:border-white/20 hover:text-foreground active:scale-[0.97]",
+                    )}
+                  >
+                    <span className="text-[11px] font-bold leading-none">
+                      {opt.label}
+                    </span>
+                    <span
+                      className={cn(
+                        "text-[9px] leading-none mt-1",
+                        isSelected ? "text-primary-foreground/70" : "text-muted-foreground/60",
+                      )}
+                    >
+                      {opt.sub}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Quantity — stepper */}
           <div className="flex items-center justify-between">
-            <Label className="text-xs font-medium">Batch Size</Label>
+            <Label className="text-xs font-medium">Quantity</Label>
             <StepperPill
               value={batchSize}
               min={1}
-              max={4}
+              max={10}
               step={1}
               onChange={setBatchSize}
             />

@@ -105,12 +105,12 @@ export const features: Feature[] = [
   {
     id: "caption-generator",
     name: "Caption Generator",
-    description: "Auto-generate accurate captions and subtitles for your video content.",
+    description: "Upload a photo and get AI-crafted Facebook captions with the perfect tone and hashtags.",
     icon: Captions,
     route: "/dashboard/caption-generator",
     gradientFrom: "#0EA5E9",
     gradientTo: "#06B6D4",
-    inputTypes: ["video"],
+    inputTypes: ["image"],
     creditCost: 3,
   },
   {

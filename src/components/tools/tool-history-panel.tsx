@@ -27,7 +27,6 @@ const VIDEO_FEATURE_IDS = new Set([
   "ai-avatar-video",
   "kling-motion",
   "video-upscaling",
-  "caption-generator",
 ]);
 
 const AUDIO_FEATURE_IDS = new Set([
