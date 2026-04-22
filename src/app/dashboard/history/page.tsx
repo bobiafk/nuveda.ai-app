@@ -1,156 +1,195 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Filter, Clock, Download, ExternalLink, Image, Music, Mic, Film, AudioLines, Captions, Move3D, Sparkles, ArrowUpCircle, UserCircle } from "lucide-react";
+import { Search } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ImageGalleryCard } from "@/components/tools/image-gallery-card";
+import { VideoGalleryCard } from "@/components/tools/video-gallery-card";
+import { AudioGalleryCard } from "@/components/tools/audio-gallery-card";
+import { GenerationPreviewModal } from "@/components/tools/generation-preview-modal";
+import type { GenerationItem } from "@/components/tools/tool-history-panel";
 
-interface HistoryItem {
-  id: string;
-  feature: string;
-  featureLabel: string;
-  title: string;
-  status: "completed" | "processing" | "failed";
-  timestamp: string;
-  creditCost: number;
-  color: string;
-  icon: React.ElementType;
-}
-
-const historyItems: HistoryItem[] = [
-  { id: "1", feature: "image-generation", featureLabel: "Image", title: "Sunset landscape with mountains and river", status: "completed", timestamp: "2 minutes ago", creditCost: 5, color: "#8B5CF6", icon: Image },
-  { id: "2", feature: "music-generation", featureLabel: "Music", title: "Lo-fi chill beat, 90 BPM, ambient mood", status: "completed", timestamp: "15 minutes ago", creditCost: 8, color: "#EC4899", icon: Music },
-  { id: "3", feature: "audio-generation", featureLabel: "Audio", title: "Product demo narration — warm tone", status: "processing", timestamp: "20 minutes ago", creditCost: 3, color: "#10B981", icon: Mic },
-  { id: "4", feature: "ai-avatar-video", featureLabel: "Avatar", title: "CEO keynote presentation avatar", status: "completed", timestamp: "1 hour ago", creditCost: 15, color: "#D946EF", icon: UserCircle },
-  { id: "5", feature: "image-upscaling", featureLabel: "Upscale", title: "Product photo 4x upscale", status: "completed", timestamp: "2 hours ago", creditCost: 2, color: "#F59E0B", icon: ArrowUpCircle },
-  { id: "6", feature: "caption-generator", featureLabel: "Caption", title: "Tutorial video captions — English", status: "completed", timestamp: "3 hours ago", creditCost: 3, color: "#0EA5E9", icon: Captions },
-  { id: "7", feature: "voice-generation", featureLabel: "Voice", title: "Audiobook chapter 3 — Aria voice", status: "completed", timestamp: "4 hours ago", creditCost: 4, color: "#6366F1", icon: AudioLines },
-  { id: "8", feature: "kling-motion", featureLabel: "Motion", title: "Product showcase zoom animation", status: "failed", timestamp: "5 hours ago", creditCost: 0, color: "#84CC16", icon: Move3D },
-  { id: "9", feature: "prompt-optimizer", featureLabel: "Prompt", title: "Optimized: fantasy castle concept", status: "completed", timestamp: "6 hours ago", creditCost: 1, color: "#EAB308", icon: Sparkles },
-  { id: "10", feature: "video-upscaling", featureLabel: "Video", title: "Interview footage 4K upscale", status: "completed", timestamp: "1 day ago", creditCost: 10, color: "#06B6D4", icon: Film },
-  { id: "11", feature: "image-generation", featureLabel: "Image", title: "Abstract gradient art for social media", status: "completed", timestamp: "1 day ago", creditCost: 5, color: "#8B5CF6", icon: Image },
-  { id: "12", feature: "music-generation", featureLabel: "Music", title: "Epic cinematic trailer music", status: "completed", timestamp: "2 days ago", creditCost: 8, color: "#EC4899", icon: Music },
+const IMAGE_HISTORY: GenerationItem[] = [
+  { id: "i1", status: "completed", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80", prompt: "Abstract neon cityscape, digital art" },
+  { id: "i2", status: "completed", url: "https://images.unsplash.com/photo-1696446702183-cbd30e087e03?w=600&q=80", prompt: "Cinematic portrait, golden hour" },
+  { id: "i3", status: "completed", url: "https://images.unsplash.com/photo-1635776063360-af6b1e8aead4?w=600&q=80", prompt: "Sci-fi landscape, ultra-detailed" },
+  { id: "i4", status: "completed", url: "https://images.unsplash.com/photo-1686191129054-c88d3fca3b3a?w=600&q=80", prompt: "Fantasy forest, mystical lighting" },
+  { id: "i5", status: "completed", url: "https://images.unsplash.com/photo-1636955779321-819753cd1741?w=600&q=80", prompt: "Futuristic architecture, 8K" },
+  { id: "i6", status: "completed", url: "https://images.unsplash.com/photo-1701985494888-c3a7b4b72752?w=600&q=80", prompt: "Dreamy ocean at sunset, photorealistic" },
+  { id: "i7", status: "completed", url: "https://images.unsplash.com/photo-1620503374956-c942862f0372?w=600&q=80", prompt: "Sunset landscape with mountains and river" },
+  { id: "i8", status: "completed", url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80", prompt: "Abstract gradient art for social media" },
 ];
 
-const filterTabs = [
-  { value: "all", label: "All" },
-  { value: "image-generation", label: "Image" },
-  { value: "audio-generation", label: "Audio" },
-  { value: "music-generation", label: "Music" },
-  { value: "video", label: "Video" },
-  { value: "voice-generation", label: "Voice" },
-  { value: "other", label: "Other" },
+const VIDEO_HISTORY: GenerationItem[] = [
+  { id: "v1", status: "completed", thumbnailUrl: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&q=80", prompt: "CEO keynote presentation avatar", duration: "0:15" },
+  { id: "v2", status: "completed", thumbnailUrl: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&q=80", prompt: "Product showcase zoom animation", duration: "0:10" },
+  { id: "v3", status: "completed", thumbnailUrl: "https://images.unsplash.com/photo-1536240478700-b869ad10a2a2?w=600&q=80", prompt: "Interview footage 4K upscale", duration: "2:30" },
+  { id: "v4", status: "completed", thumbnailUrl: "https://images.unsplash.com/photo-1608346128025-1896b97a6bfa?w=600&q=80", prompt: "Fantasy landscape camera pan", duration: "0:08" },
 ];
 
-export default function HistoryPage() {
+const AUDIO_HISTORY: GenerationItem[] = [
+  { id: "a1", status: "completed", url: "#", prompt: "Product demo narration — warm tone", duration: "0:42" },
+  { id: "a2", status: "completed", url: "#", prompt: "Upbeat electronic background music", duration: "1:24" },
+  { id: "a3", status: "completed", url: "#", prompt: "Calm ambient meditation soundtrack", duration: "2:05" },
+  { id: "a4", status: "completed", url: "#", prompt: "Epic orchestral cinematic theme", duration: "1:45" },
+  { id: "a5", status: "completed", url: "#", prompt: "Audiobook chapter 3 — Aria voice", duration: "3:12" },
+  { id: "a6", status: "completed", url: "#", prompt: "Jazz piano lounge session", duration: "3:22" },
+];
+
+type PreviewVariant = "image" | "video" | "audio";
+
+export default function GenerationsPage() {
   const [search, setSearch] = useState("");
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeTab, setActiveTab] = useState("image");
+  const [selectedItem, setSelectedItem] = useState<GenerationItem | null>(null);
+  const [previewVariant, setPreviewVariant] = useState<PreviewVariant>("image");
 
-  const filtered = historyItems.filter((item) => {
-    if (activeFilter !== "all" && !item.feature.includes(activeFilter.replace("video", "upscal"))) {
-      if (activeFilter === "video") {
-        if (!item.feature.includes("video") && !item.feature.includes("avatar")) return false;
-      } else if (activeFilter === "other") {
-        if (!["caption-generator", "kling-motion", "prompt-optimizer"].includes(item.feature)) return false;
-      } else {
-        if (item.feature !== activeFilter) return false;
-      }
-    }
-    if (search && !item.title.toLowerCase().includes(search.toLowerCase())) return false;
-    return true;
-  });
+  const [images, setImages] = useState<GenerationItem[]>(IMAGE_HISTORY);
+  const [videos, setVideos] = useState<GenerationItem[]>(VIDEO_HISTORY);
+  const [audios, setAudios] = useState<GenerationItem[]>(AUDIO_HISTORY);
+
+  const filteredImages = images.filter((i) =>
+    !search || i.prompt?.toLowerCase().includes(search.toLowerCase())
+  );
+  const filteredVideos = videos.filter((i) =>
+    !search || i.prompt?.toLowerCase().includes(search.toLowerCase())
+  );
+  const filteredAudios = audios.filter((i) =>
+    !search || i.prompt?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleImageClick = (item: GenerationItem) => {
+    setPreviewVariant("image");
+    setSelectedItem(item);
+  };
+  const handleVideoClick = (item: GenerationItem) => {
+    setPreviewVariant("video");
+    setSelectedItem(item);
+  };
+  const handleAudioClick = (item: GenerationItem) => {
+    setPreviewVariant("audio");
+    setSelectedItem(item);
+  };
+
+  const previewColor =
+    previewVariant === "image"
+      ? "#8B5CF6"
+      : previewVariant === "video"
+        ? "#D946EF"
+        : "#10B981";
 
   return (
     <div className="h-full overflow-y-auto">
-    <div className="p-4 md:p-6 max-w-5xl mx-auto space-y-6 animate-fade-in">
-      <PageHeader title="Generation History" subtitle="View all your past generations across tools" />
+      <div className="p-4 md:p-6 max-w-6xl mx-auto space-y-6 animate-fade-in">
+        <PageHeader title="Generations" subtitle="Your generated images, videos, and audio" />
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-        <div className="relative flex-1 w-full sm:max-w-sm">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search generations..."
-            className="pl-9 h-9 rounded-xl bg-input/50 border-border text-sm"
-          />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div className="relative w-full sm:max-w-sm">
+            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search generations..."
+              className="pl-9 h-9 rounded-xl bg-input/50 border-border text-sm"
+            />
+          </div>
         </div>
-        <Tabs value={activeFilter} onValueChange={setActiveFilter}>
-          <TabsList className="h-8">
-            {filterTabs.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value} className="text-xs px-2.5 h-6">
-                {tab.label}
-              </TabsTrigger>
-            ))}
+
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="h-9 mb-5">
+            <TabsTrigger value="image" className="text-xs px-4">
+              Images
+              <span className="ml-1.5 text-[10px] text-muted-foreground tabular-nums">
+                {filteredImages.length}
+              </span>
+            </TabsTrigger>
+            <TabsTrigger value="video" className="text-xs px-4">
+              Videos
+              <span className="ml-1.5 text-[10px] text-muted-foreground tabular-nums">
+                {filteredVideos.length}
+              </span>
+            </TabsTrigger>
+            <TabsTrigger value="audio" className="text-xs px-4">
+              Audio
+              <span className="ml-1.5 text-[10px] text-muted-foreground tabular-nums">
+                {filteredAudios.length}
+              </span>
+            </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="image">
+            {filteredImages.length === 0 ? (
+              <EmptyTabMessage />
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {filteredImages.map((item) => (
+                  <ImageGalleryCard
+                    key={item.id}
+                    {...item}
+                    color="#8B5CF6"
+                    onDelete={(id) => setImages((prev) => prev.filter((i) => i.id !== id))}
+                    onClick={() => handleImageClick(item)}
+                  />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="video">
+            {filteredVideos.length === 0 ? (
+              <EmptyTabMessage />
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {filteredVideos.map((item) => (
+                  <VideoGalleryCard
+                    key={item.id}
+                    {...item}
+                    color="#D946EF"
+                    onDelete={(id) => setVideos((prev) => prev.filter((i) => i.id !== id))}
+                    onClick={() => handleVideoClick(item)}
+                  />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="audio">
+            {filteredAudios.length === 0 ? (
+              <EmptyTabMessage />
+            ) : (
+              <div className="flex flex-col gap-2">
+                {filteredAudios.map((item) => (
+                  <AudioGalleryCard
+                    key={item.id}
+                    {...item}
+                    color="#10B981"
+                    onDelete={(id) => setAudios((prev) => prev.filter((i) => i.id !== id))}
+                    onClick={() => handleAudioClick(item)}
+                  />
+                ))}
+              </div>
+            )}
+          </TabsContent>
         </Tabs>
       </div>
 
-      <div className="space-y-2">
-        {filtered.map((item) => (
-          <div
-            key={item.id}
-            className="flex items-center gap-4 rounded-xl glass border border-border p-4 hover:border-white/15 transition-colors group"
-          >
-            <div
-              className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0"
-              style={{ background: `linear-gradient(135deg, ${item.color}20, ${item.color}10)` }}
-            >
-              <item.icon size={18} style={{ color: item.color }} />
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-0.5">
-                <p className="text-sm font-medium truncate">{item.title}</p>
-                <Badge
-                  variant={item.status === "completed" ? "secondary" : item.status === "processing" ? "default" : "destructive"}
-                  className="text-[10px] px-1.5 py-0 h-4 shrink-0"
-                >
-                  {item.status}
-                </Badge>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <span>{item.featureLabel}</span>
-                <span>·</span>
-                <span className="flex items-center gap-1">
-                  <Clock size={10} />
-                  {item.timestamp}
-                </span>
-                {item.creditCost > 0 && (
-                  <>
-                    <span>·</span>
-                    <span>{item.creditCost} credits</span>
-                  </>
-                )}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Download size={14} />
-              </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <ExternalLink size={14} />
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex items-center justify-center gap-2 pt-4">
-        <Button variant="outline" size="sm" className="rounded-xl text-xs" disabled>
-          Previous
-        </Button>
-        <span className="text-xs text-muted-foreground px-3">Page 1 of 3</span>
-        <Button variant="outline" size="sm" className="rounded-xl text-xs">
-          Next
-        </Button>
-      </div>
+      <GenerationPreviewModal
+        variant={previewVariant}
+        item={selectedItem}
+        color={previewColor}
+        open={!!selectedItem}
+        onOpenChange={(open) => { if (!open) setSelectedItem(null); }}
+      />
     </div>
+  );
+}
+
+function EmptyTabMessage() {
+  return (
+    <div className="flex flex-col items-center justify-center py-20 text-muted-foreground text-sm">
+      No generations found
     </div>
   );
 }

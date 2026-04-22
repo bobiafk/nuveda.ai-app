@@ -48,7 +48,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home", href: "/dashboard", icon: LayoutDashboard },
-  { label: "History", href: "/dashboard/history", icon: History },
+  { label: "Generations", href: "/dashboard/history", icon: History },
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
   { label: "Billing", href: "/dashboard/subscription", icon: CreditCard },
 ];
@@ -273,7 +273,7 @@ function DesktopSidebar() {
 
         {/* Main nav */}
         <nav className="flex flex-col gap-0.5 px-2 pt-3 shrink-0">
-          {navItems.slice(0, 1).map((item) => (
+          {navItems.slice(0, 2).map((item) => (
             <SidebarNavItem
               key={item.href}
               item={item}
@@ -313,7 +313,7 @@ function DesktopSidebar() {
 
         {/* Bottom nav */}
         <nav className="flex flex-col gap-0.5 px-2 py-2 shrink-0">
-          {navItems.slice(1).map((item) => (
+          {navItems.slice(2).map((item) => (
             <SidebarNavItem
               key={item.href}
               item={item}

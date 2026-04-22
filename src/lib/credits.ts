@@ -3,7 +3,6 @@ export interface SubscriptionTier {
   name: string;
   price: number;
   credits: number;
-  creditEfficiency: number;
   popular?: boolean;
   features: string[];
 }
@@ -14,7 +13,6 @@ export const tiers: SubscriptionTier[] = [
     name: "Starter",
     price: 9.99,
     credits: 100,
-    creditEfficiency: 1,
     features: [
       "100 credits/month",
       "All AI tools access",
@@ -27,12 +25,11 @@ export const tiers: SubscriptionTier[] = [
     name: "Creator",
     price: 24.99,
     credits: 300,
-    creditEfficiency: 1.2,
     popular: true,
     features: [
       "300 credits/month",
       "All AI tools access",
-      "Priority generation speed",
+      "Standard generation speed",
       "30-day history retention",
       "Prompt optimization included",
     ],
@@ -42,7 +39,6 @@ export const tiers: SubscriptionTier[] = [
     name: "Professional",
     price: 49.99,
     credits: 750,
-    creditEfficiency: 1.5,
     features: [
       "750 credits/month",
       "All AI tools access",
@@ -50,6 +46,7 @@ export const tiers: SubscriptionTier[] = [
       "Unlimited history retention",
       "Prompt optimization included",
       "API access",
+      "Priority support",
     ],
   },
   {
@@ -57,7 +54,6 @@ export const tiers: SubscriptionTier[] = [
     name: "Enterprise",
     price: 99.99,
     credits: 2000,
-    creditEfficiency: 2,
     features: [
       "2,000 credits/month",
       "All AI tools access",
@@ -65,7 +61,7 @@ export const tiers: SubscriptionTier[] = [
       "Unlimited history retention",
       "Prompt optimization included",
       "API access",
-      "Dedicated support",
+      "Priority support",
       "Custom integrations",
     ],
   },

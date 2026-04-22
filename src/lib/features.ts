@@ -9,6 +9,7 @@ import {
   Captions,
   Move3D,
   Sparkles,
+  Clapperboard,
   type LucideIcon,
 } from "lucide-react";
 
@@ -134,6 +135,17 @@ export const features: Feature[] = [
     gradientTo: "#F59E0B",
     inputTypes: ["text"],
     creditCost: 1,
+  },
+  {
+    id: "video-generation",
+    name: "Video Generation",
+    description: "Generate cinematic videos from a prompt with image, video, and audio references.",
+    icon: Clapperboard,
+    route: "/dashboard/video-generation",
+    gradientFrom: "#F43F5E",
+    gradientTo: "#FB7185",
+    inputTypes: ["text", "image", "video", "audio"],
+    creditCost: 80,
   },
 ];
 

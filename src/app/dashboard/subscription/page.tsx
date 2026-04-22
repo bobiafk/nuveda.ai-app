@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Coins, TrendingUp, Zap } from "lucide-react";
+import { Check, Coins, Zap } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -50,11 +50,8 @@ export default function SubscriptionPage() {
               <p className="text-lg font-bold tabular-nums">96</p>
             </div>
             <div className="rounded-xl bg-input/50 p-3">
-              <p className="text-xs text-muted-foreground mb-1">Efficiency bonus</p>
-              <p className="text-lg font-bold tabular-nums flex items-center gap-1">
-                1.2x
-                <TrendingUp size={14} className="text-green-500" />
-              </p>
+              <p className="text-xs text-muted-foreground mb-1">Generations this month</p>
+              <p className="text-lg font-bold tabular-nums">231</p>
             </div>
           </div>
         </div>

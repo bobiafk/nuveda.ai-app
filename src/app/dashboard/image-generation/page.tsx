@@ -8,6 +8,8 @@ import { ToolHistoryPanel, type GenerationItem } from "@/components/tools/tool-h
 import { PromptInput } from "@/components/tools/prompt-input";
 import { IconPillSelector, ASPECT_SHAPES, type PillOption } from "@/components/tools/icon-pill-selector";
 import { StepperPill } from "@/components/tools/stepper-pill";
+import { FileUploadZone } from "@/components/tools/file-upload-zone";
+import { GenerationPreviewModal } from "@/components/tools/generation-preview-modal";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -71,6 +73,9 @@ export default function ImageGenerationPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generations, setGenerations] = useState<GenerationItem[]>(SAMPLE_IMAGES);
   const [showNegative, setShowNegative] = useState(false);
+  const [showReference, setShowReference] = useState(false);
+  const [referenceImage, setReferenceImage] = useState<File | null>(null);
+  const [selectedItem, setSelectedItem] = useState<GenerationItem | null>(null);
 
   const currentModelLabel = models.find((m) => m.value === model)?.label ?? model;
 
@@ -107,6 +112,7 @@ export default function ImageGenerationPage() {
   };
 
   return (
+    <>
     <ToolLayout
       feature={feature}
       onGenerate={handleGenerate}
@@ -114,6 +120,27 @@ export default function ImageGenerationPage() {
       configPanel={
         <>
           <PromptInput value={prompt} onChange={setPrompt} />
+
+          {/* Reference image — collapsible */}
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={() => setShowReference((v) => !v)}
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span className="text-base leading-none">
+                {showReference ? "−" : "+"}
+              </span>
+              Reference image
+            </button>
+            {showReference && (
+              <FileUploadZone
+                accept="image"
+                value={referenceImage}
+                onChange={setReferenceImage}
+              />
+            )}
+          </div>
 
           {/* Negative prompt — collapsible */}
           <div className="space-y-2">
@@ -264,8 +291,17 @@ export default function ImageGenerationPage() {
           generations={generations}
           onDelete={handleDelete}
           onDismiss={handleDismiss}
+          onItemClick={setSelectedItem}
         />
       }
     />
+    <GenerationPreviewModal
+      variant="image"
+      item={selectedItem}
+      color={feature.gradientFrom}
+      open={!!selectedItem}
+      onOpenChange={(open) => { if (!open) setSelectedItem(null); }}
+    />
+  </>
   );
 }
